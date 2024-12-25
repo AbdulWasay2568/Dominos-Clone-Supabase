@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, NavigationProp } from '@react-navigation/native'; 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// Define your navigation types here
+
 type RootStackParamList = {
   MyDetails: undefined;
   History: undefined;
@@ -14,7 +14,7 @@ type RootStackParamList = {
 
 type AccountScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MyDetails'>;
 
-// Define the AccountScreen component
+
 const AccountScreen = () => {
   const navigation = useNavigation<AccountScreenNavigationProp>();
 
@@ -59,7 +59,7 @@ const AccountScreen = () => {
   );
 };
 
-// Styles for the AccountScreen
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

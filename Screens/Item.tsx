@@ -22,10 +22,10 @@ const Item = () => {
   const [selectedAddOns, setSelectedAddOns] = useState<Record<string, any>>({});
   
   const [loading, setLoading] = useState(true);
-  const [loadingCart, setLoadingCart] = useState(false); // Track cart loading
-  const [loadingCartItem, setLoadingCartItem] = useState(false); // Track cart item loading
+  const [loadingCart, setLoadingCart] = useState(false); 
+  const [loadingCartItem, setLoadingCartItem] = useState(false); 
 
-  // Check for item and products in route params
+
   if (!itemId || !products) {
     return (
       <View style={styles.container}>
@@ -36,7 +36,6 @@ const Item = () => {
 
   const item = products.find((product: { id: string }) => product.id === itemId);
 
-  // Fetch Addons and AddonOptions
   useEffect(() => {
     const fetchAddonsAndOptions = async () => {
       try {
@@ -73,14 +72,14 @@ const Item = () => {
 
   const handleAddOnChange = (category, option) => {
     setSelectedAddOns((prev) => {
-      // If the currently selected option is pressed again, remove it from selectedAddOns
+
       if (prev[category] === option) {
         const updatedAddOns = { ...prev };
-        delete updatedAddOns[category]; // Remove the selection for the category
+        delete updatedAddOns[category]; 
         return updatedAddOns;
       }
   
-      // Otherwise, select the new option
+
       return { ...prev, [category]: option };
     });
   };
@@ -94,12 +93,12 @@ const Item = () => {
   };
 
   const handleAddToCart = async () => {
-    // Prevent double action while loading
+
     if (loadingCart || loadingCartItem) {
       return;
     }
 
-    setLoadingCart(true); // Show cart loading
+    setLoadingCart(true); 
 
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
@@ -112,7 +111,7 @@ const Item = () => {
 
     const userID = session.user.id;
     const productId = item.id;
-    const baseQuantity = 1; // Default quantity for the product
+    const baseQuantity = 1;
     const totalAmount = calculateTotalAmount();
 
     console.log(userID);
@@ -150,7 +149,7 @@ const Item = () => {
           return;
         }
 
-        setLoadingCartItem(true); // Show cart item loading
+        setLoadingCartItem(true); 
 
         // Step 2: Add product to CartItem table
         const { error: insertCartItemError } = await supabase
@@ -173,11 +172,12 @@ const Item = () => {
 
         console.log("Item successfully added to new cart!");
 
-        // Navigate to Cart screen
+
         navigation.navigate("Cart");
         setLoadingCartItem(false);
         setLoadingCart(false);
       } else {
+
         // Step 3: Cart exists, check for cart item
         const { data: existingCartItem, error: fetchItemError } = await supabase
           .from("CartItem")
@@ -258,7 +258,6 @@ const Item = () => {
           console.error("Error updating cart total:", updateCartError.message);
         }
 
-        // Navigate to Cart screen
         navigation.navigate("Cart");
         setLoadingCart(false);
       }
@@ -304,7 +303,7 @@ const Item = () => {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={handleAddToCart}
-        disabled={loadingCart || loadingCartItem} // Disable button while loading
+        disabled={loadingCart || loadingCartItem} 
       >
         {loadingCart || loadingCartItem ? (
           <ActivityIndicator size="small" color="#fff" />

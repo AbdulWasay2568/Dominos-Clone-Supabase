@@ -51,7 +51,7 @@ const Menu: React.FC<MenuProps> = ({ navigation }) => {
         if (error) throw error;
         setCategories(fetchedCategories || []);
         if (fetchedCategories.length > 0) {
-          setActiveCategory(fetchedCategories[0].name); // Default active category
+          setActiveCategory(fetchedCategories[0].name); 
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -78,9 +78,8 @@ const Menu: React.FC<MenuProps> = ({ navigation }) => {
   
     fetchCategories();
     fetchProducts();
-  }, []); // <- Correct closing for `useEffect`
+  }, []);
   
-
   const groupedProducts = categories.map((category) => ({
     title: category.name,
     data: productsData.filter((product) => product.categoryID === category.id),
@@ -103,18 +102,16 @@ const Menu: React.FC<MenuProps> = ({ navigation }) => {
   };
 
   const toggleFavourite = async (productId: number) => {
-    // Show loading or handle UI state here if needed
-  
-    // Get the current user session
+
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   
     if (!session || sessionError) {
       console.log("User is not logged in");
-      navigation.navigate("Auth"); // Redirect to login screen if not logged in
+      navigation.navigate("Auth"); 
       return;
     }
   
-    const userID = session.user.id; // Get the logged-in user ID
+    const userID = session.user.id;
     console.log("Logged-in user ID:", userID);
   
     try {
@@ -126,7 +123,7 @@ const Menu: React.FC<MenuProps> = ({ navigation }) => {
         .eq('productID', productId)
         .single();
   
-      if (fetchError && fetchError.code !== 'PGRST116') { // Ignore "no row found" errors
+      if (fetchError && fetchError.code !== 'PGRST116') { 
         throw fetchError;
       }
   
@@ -165,7 +162,6 @@ const Menu: React.FC<MenuProps> = ({ navigation }) => {
         console.error('An unexpected error occurred:', error);
       }
     } finally {
-      // Hide loading or update UI state here if needed
     }
   };
 

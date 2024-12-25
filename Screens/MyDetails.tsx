@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
   Alert,
-  ActivityIndicator,  // Import ActivityIndicator
+  ActivityIndicator,  
 } from 'react-native';
 import { supabase } from "@/lib/supabase";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -37,12 +37,12 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
     phoneNumber: ''
   });
 
-  const [loading, setLoading] = useState(false);  // State to manage loading status
+  const [loading, setLoading] = useState(false);  
 
   const fetchUserData = async () => {
-    setLoading(true); // Show loader when data fetching starts
+    setLoading(true);
     try {
-      // Fetch the user session
+
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
       if (sessionError) throw new Error('Error fetching session: ' + sessionError.message);
@@ -50,7 +50,7 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
       if (!session) {
         console.log('User is not logged in, navigating to Auth screen.');
         navigation.navigate('Auth');
-        setLoading(false);  // Hide loader
+        setLoading(false);  
         return;
       }
 
@@ -70,7 +70,6 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
         return;
       }
 
-      // Filter out null values from the response
       const filteredData = Object.fromEntries(
         Object.entries(data || {}).filter(([_, value]) => value !== null)
       ) as {
@@ -87,14 +86,14 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
       console.error('Unexpected error:', err);
       Alert.alert('Error', 'An unexpected error occurred.');
     } finally {
-      setLoading(false);  // Hide loader after data fetch is complete
+      setLoading(false);  
     }
   };
 
   const updateUserData = async () => {
-    setLoading(true);  // Show loader when update starts
+    setLoading(true);  
     try {
-      // Fetch the user session
+
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
       if (sessionError) throw new Error('Error fetching session: ' + sessionError.message);
@@ -102,31 +101,29 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
       if (!session) {
         console.log('User is not logged in, navigating to Auth screen.');
         navigation.navigate('Auth');
-        setLoading(false);  // Hide loader
+        setLoading(false);  
         return;
       }
 
       const userID = session.user.id;
       console.log("User ID:", userID);
 
-      // Remove any keys from userData that have empty values (i.e., we don't want to update them)
       const updateFields = Object.fromEntries(
         Object.entries(userData).filter(([_, value]) => value !== '')
       );
 
-      console.log("Update fields:", updateFields); // Log to see the fields being updated
+      console.log("Update fields:", updateFields); 
 
       const { error, data } = await supabase
-        .from('users')  // Ensure the table name is correct (case-sensitive)
+        .from('users') 
         .update(updateFields)
         .eq('id', userID);
 
-      // Log the result to check if it's working
       console.log('Response data:', data);
       if (error) {
         console.error('Error updating user data:', error);
         Alert.alert('Error', `Unable to update user data: ${error.message}`);
-        setLoading(false);  // Hide loader
+        setLoading(false);  
         return;
       }
 
@@ -135,7 +132,7 @@ const MyDetails: React.FC<MyDetailsProps> = ({ navigation }) => {
       console.error('Unexpected error:', err);
       Alert.alert('Error', 'An unexpected error occurred.');
     } finally {
-      setLoading(false);  // Hide loader after update is complete
+      setLoading(false);  
     }
   };
 

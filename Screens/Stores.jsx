@@ -10,7 +10,7 @@ const Stores = () => {
   const [selectedStore, setSelectedStore] = useState(null); 
 
   useEffect(() => {
-    // Store data initialization
+
     const storeData = [
       {
         id: 1,
@@ -65,15 +65,15 @@ const Stores = () => {
         if (status === 'granted') {
           let location = await Location.getCurrentPositionAsync({});
           setUserLocation(location.coords);
-          setLoading(false); // Stop loading once the location is fetched
+          setLoading(false); 
         } else {
           Alert.alert('Permission Denied', 'Unable to access your location');
-          setLoading(false); // Stop loading on permission denial
+          setLoading(false); 
         }
       } catch (error) {
         console.error("Error fetching location: ", error);
         Alert.alert('Error', 'Failed to fetch location. Please try again.');
-        setLoading(false); // Stop loading in case of an error
+        setLoading(false); 
       }
     };
 
@@ -91,7 +91,7 @@ const Stores = () => {
   const renderStoreItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.storeCard} 
-      onPress={() => setSelectedStore(item)} // Update selectedStore when pressed
+      onPress={() => setSelectedStore(item)} 
     >
       <Text style={styles.storeName}>{item.name}</Text>
       <Text style={styles.storeAddress}>{item.address}</Text>

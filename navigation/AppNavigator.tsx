@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import Menu from "../Screens/Menu";
-import Home from "../Screens/Home";
 import Stores from "../Screens/Stores";
 import Item from "../Screens/Item";
 import PaymentMethods from "../Screens/PaymentMethods";
@@ -15,7 +14,6 @@ import Footer from "../components/Footer";
 import { RootStackParamList } from "../components/types";
 import Cart from "@/Screens/Cart";
 import AccountScreen from "@/Screens/AccountScreen";
-import TrackOrder from "@/Screens/TrackOrder";
 import MyDetails from "@/Screens/MyDetails";
 import OrderHistory from "@/Screens/OrderHistory";
 import Favourites from "@/Screens/Favourites";
@@ -29,11 +27,7 @@ const AppNavigator: React.FC = () => {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Menu">
-          {/* <Stack.Screen 
-            name="Home" 
-            component={Home} 
-            options={{ headerShown: false }} 
-          /> */}
+
           <Stack.Screen 
             name="Menu" 
             component={Menu} 
@@ -77,7 +71,6 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="Auth" component={Auth} options={{ title: "Authenticaton" }} />
 
         <Stack.Screen name="History" component={OrderHistory} options={{ title: "Order History" }} />
-        <Stack.Screen name="TrackOrder" component={TrackOrder}  options={{ title: "Track Order" }} />
         <Stack.Screen name="MyDetails" component={MyDetails}  options={{ title: "My Details" }} />
         <Stack.Screen name="Favourites" component={Favourites}  options={{ title: "My Favourites" }} />
 

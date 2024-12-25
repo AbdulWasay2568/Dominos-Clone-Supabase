@@ -28,7 +28,7 @@ export default function Auth() {
     if (error) {
       Alert.alert(error.message);
     } else {
-      // Fetch User ID after sign-in
+
       const { data: user, error: userError } = await supabase.auth.getUser();
 
       if (userError) {
@@ -37,7 +37,6 @@ export default function Auth() {
         const userID = user?.user?.id; // Get the user ID
         console.log('User ID:', userID);
 
-        // Navigate to Menu and pass the userId
         navigation.navigate('Menu', { userID });
       }
     }

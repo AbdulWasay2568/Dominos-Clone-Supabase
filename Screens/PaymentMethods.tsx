@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { supabase } from "@/lib/supabase"; // Assuming you have a supabase.js file in /lib folder
-
+import { supabase } from "@/lib/supabase";
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -29,7 +28,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ route }) => {
   const navigation = useNavigation();
 
   const [selectedMethod, setSelectedMethod] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State to track loading status
+  const [isLoading, setIsLoading] = useState(false); 
 
   const paymentOptions = ["cash", "card"];
 
@@ -39,18 +38,17 @@ const handlePlaceOrder = async () => {
     return;
   }
 
-  // Prepare payment data
   const paymentData = {
-    cartID: cartID, // Cart ID from passed params
-    payment_amount: total, // Total price from the params
-    payment_method: selectedMethod, // Selected payment method (Cash or Card)
-    payment_status: selectedMethod === "cash" ? "completed" : "pending", // Determine payment status
+    cartID: cartID, 
+    payment_amount: total, 
+    payment_method: selectedMethod, 
+    payment_status: selectedMethod === "cash" ? "completed" : "pending", 
   };
 
-  setIsLoading(true); // Show loading indicator
+  setIsLoading(true); 
 
   try {
-    // Get the user ID from the current session
+
     const {
       data: { session },
       error: sessionError,
@@ -58,43 +56,39 @@ const handlePlaceOrder = async () => {
 
     if (!session || sessionError) {
       console.log("User is not logged in", sessionError);
-      navigation.navigate("Auth"); // Navigate to Auth screen if not logged in
-      setIsLoading(false); // Hide loading indicator
+      navigation.navigate("Auth"); 
+      setIsLoading(false); 
       return;
     }
 
-    const userID = session.user.id; // Extract user ID from session
+    const userID = session.user.id; 
 
-    // Insert payment data into the "Payment" table
     const { data: paymentDataResponse, error: paymentError } = await supabase
       .from("Payment")
       .insert([paymentData])
-      .select("*") // Ensure you get the inserted data back
+      .select("*") 
       .single();
 
-    // Check for errors from the insert operation
     if (paymentError) {
       console.error("Payment insertion error:", paymentError);
       alert(`Payment failed: ${paymentError.message}`);
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false); 
       return;
     }
 
-    // Check if the response is null or empty
     if (!paymentDataResponse) {
       console.error("Payment data is null:", paymentDataResponse);
       alert("Payment failed, no response data.");
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false); 
       return;
     }
 
     console.log("Payment successful:", paymentDataResponse);
 
-    // After payment insertion, insert data into the "Order" table
     const orderData = {
-      paymentID: paymentDataResponse.id, // Use the payment ID returned from the Payment table
-      userID: userID, // Add the userID from the session
-      order_status: "processing", // Set the initial order status as "processing"
+      paymentID: paymentDataResponse.id, 
+      userID: userID, 
+      order_status: "processing", 
     };
 
     const { data: orderDataResponse, error: orderError } = await supabase
@@ -105,13 +99,12 @@ const handlePlaceOrder = async () => {
     if (orderError) {
       console.error("Order insertion error:", orderError.message);
       alert(`Order placement failed: ${orderError.message}`);
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false); 
       return;
     }
 
     console.log("Order placed successfully:", orderDataResponse);
 
-    // Fetch cart items
     const { data: cartItems, error: fetchCartItemsError } = await supabase
       .from("CartItem")
       .select("*")
@@ -119,7 +112,7 @@ const handlePlaceOrder = async () => {
 
     if (fetchCartItemsError) {
       console.error("Failed to fetch cart items:", fetchCartItemsError);
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false); 
       return;
     }
 
@@ -150,19 +143,18 @@ const handlePlaceOrder = async () => {
     if (cartItemDeleteError) {
       console.error("Cart item deletion error:", cartItemDeleteError.message);
       alert(`Failed to remove items from cart: ${cartItemDeleteError.message}`);
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false); 
       return;
     }
 
     console.log("Cart items deleted successfully.");
 
-    // Navigate to the order confirmation screen
     navigation.navigate("OrderPlaced");
   } catch (error) {
     console.error("Unexpected error:", error);
     alert("An unexpected error occurred. Please try again.");
   } finally {
-    setIsLoading(false); // Hide loading indicator after operation completes
+    setIsLoading(false); 
   }
 };
       
@@ -210,10 +202,10 @@ const handlePlaceOrder = async () => {
         <TouchableOpacity
           style={styles.button}
           onPress={handlePlaceOrder}
-          disabled={isLoading} // Disable button while loading
+          disabled={isLoading} 
         >
           {isLoading ? (
-            <ActivityIndicator color="#fff" /> // Loading indicator
+            <ActivityIndicator color="#fff" /> 
           ) : (
             <Text style={styles.buttonText}>Place Order</Text>
           )}

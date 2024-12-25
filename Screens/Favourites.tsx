@@ -39,7 +39,6 @@ const fetchFavourites = async () => {
       console.log('Fetching favourites...');
       setLoading(true);
     
-      // Fetch user session
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     
       if (sessionError) throw new Error('Error fetching session: ' + sessionError.message);
@@ -53,7 +52,6 @@ const fetchFavourites = async () => {
       const userID = session.user.id;
       console.log('User ID:', userID);
     
-      // Fetch favourites from Supabase
       const { data, error } = await supabase
         .from('Favourites')
         .select(`
@@ -70,7 +68,6 @@ const fetchFavourites = async () => {
     
       if (error) throw new Error('Error fetching favourites: ' + error.message);
     
-      // Map data to extract product details
       const favouriteProducts = data.map((fav: any) => ({
         id: fav.Product.id,
         name: fav.Product.name,
@@ -81,14 +78,14 @@ const fetchFavourites = async () => {
     
       setProducts(favouriteProducts);
     } catch (error: unknown) {
-      // Type assertion to specify the error is an instance of Error
+
       if (error instanceof Error) {
         console.error('Error fetching favourites:', error.message);
       } else {
         console.error('Unexpected error:', error);
       }
     } finally {
-      setLoading(false); // Ensure setLoading is called in the finally block
+      setLoading(false); 
     }
   }
     
@@ -107,7 +104,6 @@ const fetchFavourites = async () => {
 
       const userID = session.user.id;
 
-      // Remove the product from favourites
       const { error } = await supabase
         .from('Favourites')
         .delete()
@@ -116,11 +112,10 @@ const fetchFavourites = async () => {
 
       if (error) throw new Error('Error removing product: ' + error.message);
 
-      // Update the local state
       setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
       console.log('Product successfully removed.');
     }   catch (error: unknown) {
-      // Type assertion to specify the error is an instance of Error
+
       if (error instanceof Error) {
         console.error('Error removing product:', error.message);
       } else {
@@ -133,7 +128,7 @@ const fetchFavourites = async () => {
 
   const navigateToItemPage = (item: Product) => {
     console.log('Navigating to item page with productID:', item.id);
-    // Pass itemId and entire productsData to the Item screen
+
     console.log('Favourites successfully fetched.',products);
     navigation.navigate('Item', { 
       itemId: item.id, 
@@ -142,7 +137,7 @@ const fetchFavourites = async () => {
   };
 
   const renderProduct = ({ item }: { item: Product | undefined }) => {
-    if (!item) return null; // Skip rendering if item is undefined
+    if (!item) return null;
 
     return (
       <TouchableOpacity
@@ -180,7 +175,7 @@ const fetchFavourites = async () => {
     <SafeAreaProvider style={styles.container}>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={products || []} // Default to an empty array
+          data={products || []} 
           renderItem={renderProduct}
           keyExtractor={(product) => product?.id?.toString() || Math.random().toString()}
           numColumns={2}
