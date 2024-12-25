@@ -1,0 +1,18 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+, "components/Footer.jsx", "Screens/Home.jsx", "Screens/Item.tsx", "Screens/Cart.tsx", "Screens/CardInfo.tsx", "Screens/MyInfo.tsx", "Screens/OrderPlaced.tsx", "Screens/PaymentMethods.tsx"  ]
+}
